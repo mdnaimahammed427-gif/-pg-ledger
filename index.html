@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0f2744"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><title>PG Run & Fuel Ledger</title>
+<style>
+:root{--navy:#0f2744;--blue:#1769e0;--green:#16794f;--bg:#f2f5f9;--line:#dde5ec;--mut:#66788a;font-family:system-ui,-apple-system,"Noto Sans Bengali",sans-serif;color:#182230;background:var(--bg)}
+*{box-sizing:border-box}body{margin:0}.hidden{display:none!important}
+label{display:block;font-size:13px;font-weight:650;margin-bottom:5px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #cbd6dc;border-radius:9px;font:inherit;background:#fff;color:#182230}textarea{min-height:70px}
+.btn{border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;background:var(--blue);color:#fff;font-size:14px}.btn.sec{background:#e8eef7;color:#173a6b}.btn.wide{width:100%}
+.muted{color:var(--mut);font-size:13px}.err{color:#a92d20;font-size:13px;margin-top:8px}.ok{color:var(--green);font-size:13px;margin-top:8px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}h2{font-size:17px;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.full{grid-column:1/-1}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+/* login */
+#authCard{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#0f2744,#1b4f8f);padding:16px}
+#authCard .box{background:#fff;border-radius:18px;padding:28px;width:100%;max-width:400px}
+#authCard h1{margin:0 0 4px;font-size:22px;color:var(--navy)}#authCard .sub{color:var(--mut);font-size:13px;margin:0 0 18px}
+.or{text-align:center;color:var(--mut);font-size:12px;margin:14px 0}
+/* layout */
+#appArea{display:flex;min-height:100vh}
+aside{width:220px;background:var(--navy);color:#fff;padding:16px 12px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+aside .logo{font-weight:800;font-size:16px;padding:6px 10px 18px}
+aside button{display:block;width:100%;text-align:left;background:none;border:0;color:#c9d6e8;padding:11px 12px;border-radius:9px;font:inherit;font-size:14px;cursor:pointer;margin-bottom:3px}
+aside button.on{background:var(--blue);color:#fff;font-weight:700}aside .sp{flex:1}
+.content{flex:1;min-width:0;padding:22px;max-width:980px}
+.hello h1{margin:0;font-size:22px}.hello{margin-bottom:16px}
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.metric{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.metric span{font-size:12px;color:var(--mut)}.metric b{display:block;font-size:22px;margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid #edf1f5}th{color:var(--mut);font-weight:650;font-size:12px}
+.tag{padding:3px 9px;border-radius:99px;font-size:11px;font-weight:700;background:#e3f5ec;color:var(--green)}.tag.p{background:#fff1d6;color:#8a5a00}
+.sumrow{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #edf1f5}.sumrow:last-child{border:0}
+.dur{background:#e7f6ee;border-radius:10px;padding:12px;color:var(--green);font-weight:700}
+.warn{background:#fff6dc;color:#7a5800;border-radius:10px;padding:12px;font-size:13px;margin-bottom:14px}
+.log{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #edf1f5}.dot{width:30px;height:30px;border-radius:50%;background:#e3f5ec;color:var(--green);display:grid;place-items:center;flex:none;font-weight:800}.dot.c{background:#e3edff;color:var(--blue)}
+.pager{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:12px}
+dialog{border:0;border-radius:16px;padding:22px;width:calc(100% - 24px);max-width:440px}dialog::backdrop{background:rgba(10,20,40,.55)}
+.bar{height:10px;background:#e3eaf2;border-radius:9px;overflow:hidden;margin:10px 0}.bar i{display:block;height:100%;background:var(--green)}.bnav{display:none}
+@media(max-width:760px){aside{display:none}.content{padding:14px 12px 84px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.cards3{grid-template-columns:1fr 1fr}
+.bnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);z-index:5}
+.bnav{overflow-x:auto}.bnav button{flex:1;min-width:66px;background:none;border:0;padding:10px 2px 12px;font-size:11px;color:var(--mut);cursor:pointer}.bnav button.on{color:var(--blue);font-weight:800}
+.hide-m{display:none}}
+</style></head><body>
+<section id="authCard"><div class="box"><h1>PG Run & Fuel Ledger</h1><p class="sub">Track · Verify · Balance</p>
+<label>User ID</label><input id="email" autocomplete="username" autocapitalize="none"><label style="margin-top:10px">Password</label><input id="password" type="password" autocomplete="current-password">
+<button class="btn wide" id="loginBtn" type="button" style="margin-top:14px">Login</button><div id="authMsg" class="err"></div></div></section>
+
+<div id="appArea" class="hidden">
+<aside><div class="logo">⛽ PG Run & Fuel Ledger</div>
+<button data-go="dash" class="on">Dashboard</button><button data-go="run">PG Run</button><button data-go="stock">Fuel Stock</button><button data-go="debt">ধার-দেনা</button><button data-go="hist">My History</button><button data-go="log">Adjustment Log</button><button data-go="admin" class="adm hidden">Users (Admin)</button><button data-go="prof">Profile</button>
+<div class="sp"></div><button id="logoutBtn">Logout</button></aside>
+<div class="content">
+<section data-page="dash"><div class="hello"><h1>Hello, <span id="uName"></span> 👋</h1><div class="muted">আপনার ব্যক্তিগত হিসাব ও সারসংক্ষেপ</div></div>
+<div class="cards3"><div class="metric"><span>আজকের PG Run</span><b id="mToday">0 টি</b></div><div class="metric"><span>আজকের Fuel ব্যবহার</span><b id="mFuel">0 L</b></div><div class="metric"><span>আজকের রানিং সময়</span><b id="mTime">0 মি</b></div></div>
+<div class="card"><h2>Fuel Stock <span class="muted">(আনুমানিক)</span></h2><b id="dStock" style="font-size:30px"></b><div class="bar"><i id="dBar"></i></div><div class="muted" id="dStockSub"></div></div>
+<div class="cards3"><div class="metric"><span>পাবো (ধার দিয়েছি)</span><b id="dRecv">0 L</b></div><div class="metric"><span>দেব (ধার নিয়েছি)</span><b id="dPay">0 L</b></div></div>
+<div class="card"><h2>মাসিক সারাংশ (<span id="mMonth"></span>)</h2><div class="sumrow"><span>মোট রানিং সময়</span><b id="sTime"></b></div><div class="sumrow"><span>মোট Fuel ব্যবহার</span><b id="sFuel"></b></div><div class="sumrow"><span>মোট সাইট ভিজিট</span><b id="sVis"></b></div></div>
+<div class="card"><div class="row" style="justify-content:space-between"><h2>সাম্প্রতিক কার্যক্রম</h2><button class="btn sec" data-go="hist">সব দেখুন →</button></div><div style="overflow-x:auto"><table><thead><tr><th>তারিখ</th><th>সাইট</th><th>সময়</th><th>Fuel</th><th>স্ট্যাটাস</th></tr></thead><tbody id="recent"></tbody></table></div></div></section>
+
+<section data-page="run" class="hidden"><div class="card"><h2>PG Run যোগ করুন</h2><form id="runForm" class="grid">
+<div><label>তারিখ</label><input id="date" type="date" required></div><div><label>Site Code</label><input id="siteCode" required placeholder="JPSDR40"></div>
+<div><label>PG Start</label><input id="startAt" type="datetime-local" required></div><div><label>PG Stop</label><input id="endAt" type="datetime-local" required></div>
+<div class="full dur" id="durBox">মোট সময়: —</div>
+<div><label>Fuel Used (L)</label><input id="fuelUsed" type="number" min="0" step="0.01" required></div><div><label>Site Down?</label><select id="siteDown"><option value="yes">Yes</option><option value="no">No</option></select></div>
+<div><label>CP Restore / Event</label><input id="event" placeholder="CP restore"></div><div><label>Module Count</label><input id="moduleCount" type="number" min="0" value="0"></div>
+<div class="full"><label>Remark</label><textarea id="remark"></textarea></div><div class="full"><button class="btn wide" type="submit">সাবমিট করুন</button></div></form><div id="runMsg" class="err"></div></div></section>
+
+<section data-page="hist" class="hidden"><div class="card"><h2>My History</h2>
+<div class="grid" style="margin-bottom:12px"><select id="fSite"><option value="">সব সাইট</option></select><input id="fQ" placeholder="Site Code / Remark খুঁজুন"><div><label>থেকে</label><input id="fFrom" type="date"></div><div><label>পর্যন্ত</label><input id="fTo" type="date"></div></div>
+<div style="overflow-x:auto"><table><thead><tr><th>তারিখ</th><th>সাইট</th><th>সময়</th><th>Fuel</th><th>স্ট্যাটাস</th><th></th></tr></thead><tbody id="histBody"></tbody></table></div>
+<div class="pager"><button class="btn sec" id="pPrev">←</button><span id="pInfo" class="muted"></span><button class="btn sec" id="pNext">→</button></div></div></section>
+
+<section data-page="log" class="hidden"><div class="card"><h2>Adjustment Log (Audit Trail)</h2><div id="logList"></div></div></section>
+<section data-page="stock" class="hidden"><div class="cards3"><div class="metric"><span>বর্তমান স্টক</span><b id="stBal"></b></div><div class="metric"><span>মোট জমা/প্রাপ্তি</span><b id="stIn"></b></div><div class="metric"><span>PG-তে ব্যবহার</span><b id="stUsed"></b></div></div>
+<div class="card"><h2>স্টক এন্ট্রি</h2><form id="stockForm" class="grid"><div><label>ধরন</label><select id="stType"><option value="in">জমা (কেনা/পাওয়া)</option><option value="out">বের (অন্য খরচ)</option></select></div><div><label>তারিখ</label><input id="stDate" type="date" required></div><div><label>পরিমাণ (L)</label><input id="stLiters" type="number" min="0.01" step="0.01" required></div><div><label>নোট</label><input id="stNote"></div><div class="full"><button class="btn wide" type="submit">সংরক্ষণ</button></div></form><div id="stMsg" class="err"></div></div>
+<div class="card"><h2>স্টক ইতিহাস</h2><div style="overflow-x:auto"><table><thead><tr><th>তারিখ</th><th>ধরন</th><th>পরিমাণ</th><th>নোট</th></tr></thead><tbody id="stBody"></tbody></table></div><p class="muted">স্টক = জমা − বের − Confirmed PG Run-এর Fuel ± ধার-দেনা। এন্ট্রি মোছা যায় না; ভুল হলে উল্টো এন্ট্রি দিন।</p></div></section>
+<section data-page="debt" class="hidden"><div class="cards3"><div class="metric"><span>পাবো</span><b id="dbRecv"></b></div><div class="metric"><span>দেব</span><b id="dbPay"></b></div></div>
+<div class="card"><h2>নতুন ধার-দেনা</h2><form id="debtForm" class="grid"><div><label>ধরন</label><select id="dbDir"><option value="gave">ধার দিয়েছি (পাবো)</option><option value="took">ধার নিয়েছি (দেব)</option></select></div><div><label>ব্যক্তির নাম</label><input id="dbPerson" required></div><div><label>তারিখ</label><input id="dbDate" type="date" required></div><div><label>পরিমাণ (L)</label><input id="dbLiters" type="number" min="0.01" step="0.01" required></div><div class="full"><label>নোট</label><input id="dbNote"></div><div class="full"><button class="btn wide" type="submit">সংরক্ষণ</button></div></form><div id="dbMsg" class="err"></div></div>
+<div class="card"><h2>তালিকা</h2><div id="dbList"></div></div></section>
+<section data-page="admin" class="hidden"><div class="card"><h2>নতুন ইউজার তৈরি করুন</h2><form id="userForm" class="grid"><div><label>User ID (a-z, 0-9, _ . -)</label><input id="uId" required autocapitalize="none"></div><div><label>নাম</label><input id="uNm"></div><div class="full"><label>Password (কমপক্ষে ৬ অক্ষর)</label><input id="uPw" type="text" required></div><div class="full"><button class="btn wide" type="submit">ইউজার তৈরি করুন</button></div></form><div id="uMsg" class="err"></div></div>
+<div class="card"><h2>ইউজার তালিকা</h2><div id="uList"></div><p class="muted">"বন্ধ করুন" দিলে ওই ইউজার আর ঢুকতে বা ডেটা দেখতে পারবে না।</p></div></section>
+<section data-page="prof" class="hidden"><div class="card"><h2>Profile</h2><div class="sumrow"><span>নাম</span><b id="pName"></b></div><div class="sumrow"><span>Email</span><b id="userEmail"></b></div><div class="sumrow"><span>User ID</span><span class="muted" id="pUid"></span></div></div><div class="card"><h2>Password পরিবর্তন</h2><div class="row"><input id="newPw" type="password" placeholder="নতুন password" style="max-width:260px"><button class="btn" id="pwBtn" type="button">পরিবর্তন করুন</button></div><div id="pwMsg" class="err"></div></div></section>
+</div>
+<nav class="bnav"><button data-go="dash" class="on">Home</button><button data-go="run">PG Run</button><button data-go="stock">Stock</button><button data-go="debt">ধার-দেনা</button><button data-go="hist">History</button><button data-go="log">Log</button><button data-go="admin" class="adm hidden">Users</button><button data-go="prof">Profile</button></nav>
+</div>
+
+<dialog id="adjustDialog"><h2>Fuel Adjustment</h2><div class="warn">রিপোর্ট করা Fuel প্রকৃত পরিমাণের সাথে না মিললে এখানে সমন্বয় করুন।</div><input id="adjustRunId" type="hidden">
+<div class="grid"><div><label>রিপোর্ট করা Fuel (L)</label><input id="adjOld" disabled></div><div><label>প্রকৃত পরিমাণ (L)</label><input id="adjustFuel" type="number" min="0" step=".01"></div></div>
+<div class="dur" id="adjDelta" style="margin:12px 0">সমন্বয়: 0</div><label>কারণ লিখুন *</label><textarea id="adjustReason"></textarea>
+<div class="row" style="margin-top:14px"><button class="btn" id="adjustSave" type="button">সাবমিট</button><button class="btn sec" id="adjustCancel" type="button">বাতিল</button></div><div id="adjustMsg" class="err"></div></dialog>
+<dialog id="repayDialog"><h2>পরিশোধ</h2><p class="muted" id="rpInfo"></p><label>পরিমাণ (L)</label><input id="rpAmt" type="number" min="0.01" step="0.01"><div class="row" style="margin-top:14px"><button class="btn" id="rpSave" type="button">সংরক্ষণ</button><button class="btn sec" id="rpCancel" type="button">বাতিল</button></div><div id="rpMsg" class="err"></div></dialog>
+<dialog id="okDialog" style="text-align:center"><div style="font-size:44px">✅</div><h2>PG Run Saved!</h2><p class="muted">Pending হিসেবে সংরক্ষিত। History থেকে Confirm করুন।</p><div class="row" style="justify-content:center"><button class="btn" id="okMore" type="button">আরেকটি এন্ট্রি</button><button class="btn sec" id="okHist" type="button">History দেখুন</button></div></dialog>
+<script type="module" src="./app.js"></script><script>if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"))</script></body></html>
